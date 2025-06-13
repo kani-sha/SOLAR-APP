@@ -1,29 +1,42 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { Stack } from "expo-router";
+import { UserAnswersProvider } from "./context/UserAnswersContext";
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
-  }
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <UserAnswersProvider>
+    <Stack>
+      <Stack.Screen
+        name="index"
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="survey1"
+        options={{ headerShown: false }} // no header on survey screen
+      />
+
+      <Stack.Screen
+        name="survey2"
+        options={{ headerShown: false }} // no header on survey screen
+      />
+
+      <Stack.Screen
+        name="survey3"
+        options={{ headerShown: false }} // no header on survey screen
+      />
+
+      <Stack.Screen
+        name="survey4"
+        options={{ headerShown: false }} // no header on survey screen
+      />
+
+      <Stack.Screen
+        name="survey5"
+        options={{ headerShown: false }} // no header on survey screen
+      />
+
+
+    </Stack>
+    </UserAnswersProvider>
   );
 }
