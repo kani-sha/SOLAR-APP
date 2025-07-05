@@ -4,6 +4,7 @@ export default function UserPlanScreen() {
 const { answers } = useUserAnswers();
 
 // -- Calculations -- //
+// comment for github :D
     const { appliances, usage, area, location, installationLocation, shading, budget } = answers;
 
 
