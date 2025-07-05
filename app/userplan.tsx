@@ -21,8 +21,11 @@ const { answers } = useUserAnswers();
 
     // - Solar Panel Sizing
 
-
-
+    // - Battery Amount
+    
     // - Tilt Angle
+
+
+    // - Cost Estimation
 
 }
