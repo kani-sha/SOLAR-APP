@@ -2,12 +2,9 @@ import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-import { useUserAnswers } from "./context/UserAnswersContext";
+import { ApplianceWithHours, useUserAnswers } from "./context/UserAnswersContext";
+import { defaultWattages } from "./survey2";
 
-interface ApplianceWithHours {
-  id: string; 
-  hours: number; 
-}
 
 export default function SurveyScreen() {
 const router = useRouter();
@@ -40,17 +37,17 @@ const router = useRouter();
     { label: "Circular Saw", value: "circular_saw" }
   ]);
 
-  // Function to handle moving to the next screen and saving selected appliances to context
   const handleNext = () => {
-    // Transform selected string IDs into objects with default hours
     const appliancesWithDefaultHours: ApplianceWithHours[] = selectedAppliances.map(id => ({
       id: id,
-      hours: 0, // Initialize hours to 0
+      hours: 0,
+      defaultWattage: defaultWattages[id] || 0,
+      wattage: defaultWattages[id] || 0, // Assuming wattage is also needed
+      quantity: 0,
     }));
 
-    // Update the context with the new structure
-    setAnswers((prev) => ({ ...prev, appliances: appliancesWithDefaultHours }));
 
+    setAnswers((prev) => ({ ...prev, appliances: appliancesWithDefaultHours }));
     router.push("/survey2");
   };
 

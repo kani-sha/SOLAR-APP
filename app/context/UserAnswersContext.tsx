@@ -1,8 +1,22 @@
 import { createContext, useContext, useState } from "react";
 
+export interface ApplianceWithHours {
+  id: string; 
+  hours: number; 
+  wattage: number;
+}
+
 type Answers = {
-  appliances: string[];
+  appliances: ApplianceWithHours[];
   usage?: Record<string, number>;
+  area?: number | null; // For the area input (can be null if not entered)
+  installationLocation?: 'roof' | 'ground' | null; // For the first dropdown
+  shading?: 'noshade' | 'someshade' | 'mostshade' | null; // For the second dropdown
+  location?: {
+    longitude: number, 
+    latitude: number
+  }; 
+  budget?: number; 
 };
 
 type ContextType = {
@@ -15,6 +29,12 @@ const UserAnswersContext = createContext<ContextType | undefined>(undefined);
 export const UserAnswersProvider = ({ children }: { children: React.ReactNode }) => {
   const [answers, setAnswers] = useState<Answers>({
     appliances: [],
+    usage: {},
+    area: null,
+    installationLocation: null,
+    shading: null,
+    location: undefined, 
+    budget: undefined, 
   });
 
   return (

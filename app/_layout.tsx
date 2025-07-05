@@ -12,29 +12,33 @@ export default function RootLayout() {
 
       <Stack.Screen
         name="survey1"
-        options={{ headerShown: false }} // no header on survey screen
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen
         name="survey2"
-        options={{ headerShown: false }} // no header on survey screen
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen
         name="survey3"
-        options={{ headerShown: false }} // no header on survey screen
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen
         name="survey4"
-        options={{ headerShown: false }} // no header on survey screen
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen
         name="survey5"
-        options={{ headerShown: false }} // no header on survey screen
+        options={{ headerShown: false }}
       />
 
+      <Stack.Screen
+        name="userplan"
+        options={{ headerShown: false }}
+      />
 
     </Stack>
     </UserAnswersProvider>

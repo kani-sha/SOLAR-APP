@@ -2,10 +2,20 @@ import Slider from '@react-native-community/slider';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useUserAnswers } from './context/UserAnswersContext';
 
-export default function SurveyScreen2() {
+export default function SurveyScreen5() {
   const [budget, setBudget] = useState(5000);
   const router = useRouter();
+  const { setAnswers } = useUserAnswers();
+
+  const handleSeeMyPlan = () => {
+    setAnswers((prevAnswers) => ({
+      ...prevAnswers,
+      budget: budget, // Save the budget here
+    }));
+    router.push("/userplan"); // Navigate to the next screen (or the results screen)
+  };
 
   return (
     <View style={styles.container}>
@@ -27,7 +37,7 @@ export default function SurveyScreen2() {
 
       <TouchableOpacity
               style={styles.button}
-              onPress={() => router.push("/survey4")}
+              onPress={handleSeeMyPlan}
               activeOpacity={0.8}
             >
               <Text style={styles.buttonText}>See My Plan!</Text>
