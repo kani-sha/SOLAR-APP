@@ -85,7 +85,8 @@ const [panelAmt, setPanelAmt] = useState<number | null>(null);
     
     // - Tilt Angle
 
- 
+    const tilt = (location && 'latitude' in location ? (location as any).latitude : 0);
+
     // - Cost Estimation
 
 }
