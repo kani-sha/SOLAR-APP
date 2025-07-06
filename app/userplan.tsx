@@ -8,6 +8,13 @@ const { answers } = useUserAnswers();
 
 const [psh, setPsh] = useState<number | null>(null); // Peak Sun Hours
 const [panelAmt, setPanelAmt] = useState<number | null>(null);
+const [batteryAmt, setBatteryAmt] = useState<number | null>(null);
+
+// Constants for gel batteries
+  const DAYS_OF_AUTONOMY = 2;
+  const DEPTH_OF_DISCHARGE = 0.6;
+  const SYSTEM_VOLTAGE = 12;
+  const UNIT_BATTERY_AH = 100;
 
 // -- Calculations -- //
     const { appliances, usage, area, location, installationLocation, shading, budget } = answers;
@@ -55,8 +62,6 @@ const [panelAmt, setPanelAmt] = useState<number | null>(null);
 }, [location]);
 
 
-    
-
     // - Solar Panel Sizing
     useEffect(() => {
     if (psh && totalDailyWattageHours > 0) {
@@ -66,6 +71,17 @@ const [panelAmt, setPanelAmt] = useState<number | null>(null);
       setPanelAmt(panelAmt);
     }
   }, [psh, totalDailyWattageHours]);
+
+  // - Battery Amount Calculation
+  useEffect(() => {
+    if (totalDailyWattageHours > 0) {
+      const totalBatteryStorage = totalDailyWattageHours * DAYS_OF_AUTONOMY;
+      const batteryCapacityNeeded = totalBatteryStorage / DEPTH_OF_DISCHARGE;
+      const unitBatteryCapacity = batteryCapacityNeeded / SYSTEM_VOLTAGE;
+      const batteryAmt = Math.ceil(unitBatteryCapacity / UNIT_BATTERY_AH);
+      setBatteryAmt(batteryAmt);
+    }
+  }, [totalDailyWattageHours]);
 
   return (
     <div className="p-4">
@@ -80,7 +96,7 @@ const [panelAmt, setPanelAmt] = useState<number | null>(null);
   );
 }
 
-    // - Battery Amount
+    
     
     // - Tilt Angle
 
