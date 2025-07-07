@@ -1,5 +1,5 @@
-import { useUserAnswers } from './context/UserAnswersContext';
 import { useEffect, useState } from 'react';
+import { useUserAnswers } from './context/UserAnswersContext';
 
 export default function UserPlanScreen() {
 const { answers } = useUserAnswers();
@@ -96,12 +96,3 @@ const [batteryAmt, setBatteryAmt] = useState<number | null>(null);
   );
 }
 
-    
-    
-    // - Tilt Angle
-
-    const tilt = (location && 'latitude' in location ? (location as any).latitude : 0);
-
-    // - Cost Estimation
-
-}
