@@ -1,20 +1,27 @@
-# Solar D.I.Y App
+# 🌞 Solar D.I.Y App
 
-A cross-platform mobile application built with **React Native** and **Expo**. Working under Professor Paul Berger at The Ohio State University.
+A **cross-platform mobile application** developed using **React Native** and **Expo**, designed to assist in the installation of solar panels—particularly in **developing countries**.
 
-> **Goal:** To aid solar panel installation in developing countries.
+> 📚 Developed under the guidance of **Professor Paul Berger** at **The Ohio State University**.
 
-## 🛠️ Technologies
+---
 
-- **React Native** with Expo
-- **TypeScript**
-- Expo Go for rapid development/testing
+## 🎯 Purpose
 
-## 🧑‍💻 My Role
+The app is intended to **simplify and support solar panel setup** by providing clear and accessible instructions tailored for remote communities.
 
-- Designed and developed the entire application
-- Implemented state management and navigation
-- Focused on responsive UI and clean component structure
+---
+
+## 🛠️ Tech Stack
+
+- ⚛️ **React Native** with **Expo** – For seamless cross-platform development  
+- 🟦 **TypeScript** – Ensures type safety and cleaner code  
+- 📱 **Expo Go** – Enables rapid development, live reloading, and device testing  
+- 🌐 **React Navigation** – For intuitive app navigation   
+
+
+
+
 
 
 
