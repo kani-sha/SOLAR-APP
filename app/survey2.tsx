@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { ApplianceWithHours, useUserAnswers } from './context/UserAnswersContext';
 
+// Labels for appliances to be displayed in the UI
 const applianceLabels: Record<string, string> = {
   fridge: "Refrigerator",
   ac: "Air Conditioner",
@@ -29,6 +30,7 @@ const applianceLabels: Record<string, string> = {
   circular_saw: "Circular Saw",
 };
 
+// Default wattages for appliances, used if not specified by the use
 export const defaultWattages: Record<string, number> = {
   fridge: 150,
   ac: 1500,
@@ -54,6 +56,7 @@ export const defaultWattages: Record<string, number> = {
   circular_saw: 1000,
 };
 
+// This is the second survey screen where users can specify how long they will use their appliances daily
 export default function SurveyScreen2() {
   const router = useRouter();
   const {answers, setAnswers} =useUserAnswers();

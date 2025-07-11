@@ -5,10 +5,11 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { ApplianceWithHours, useUserAnswers } from "./context/UserAnswersContext";
 import { defaultWattages } from "./survey2";
 
-
+// This is the first survey screen where users can select appliances they will be installing
 export default function SurveyScreen() {
 const router = useRouter();
 
+// State to manage the dropdown open state and selected appliances
   const [open, setOpen] = useState(false);
   const [selectedAppliances, setSelectedAppliances] = useState<string[]>([]);
   const { setAnswers } = useUserAnswers();
@@ -37,6 +38,8 @@ const router = useRouter();
     { label: "Circular Saw", value: "circular_saw" }
   ]);
 
+// Function to handle the next button click
+  // It collects the selected appliances and sets them in the context with default hours and wattage
   const handleNext = () => {
     const appliancesWithDefaultHours: ApplianceWithHours[] = selectedAppliances.map(id => ({
       id: id,
@@ -51,16 +54,18 @@ const router = useRouter();
     router.push("/survey2");
   };
 
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>What appliance(s) will you be installing?</Text>
     
+    // Dropdown to select multiple appliances
     <View style= {{ marginTop: 20, zIndex: 1000, elevation: 1000 }}>
     <DropDownPicker
         multiple={true}
         min={0}
         max={10}
-        mode="BADGE"
+        mode="BADGE" // Use BADGE mode for better visibility of selected items
         open={open}
         value={selectedAppliances}
         items={items}
@@ -74,6 +79,7 @@ const router = useRouter();
 
 
     </View>
+    // Button to proceed to the next screen
       <TouchableOpacity
               style={styles.button}
               onPress={handleNext}
