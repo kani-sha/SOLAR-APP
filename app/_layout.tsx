@@ -1,9 +1,10 @@
 import { Stack } from "expo-router";
 import { UserAnswersProvider } from "./context/UserAnswersContext";
 
+// The root layout for the app, which sets up the navigation stack
 export default function RootLayout() {
   return (
-    <UserAnswersProvider>
+    <UserAnswersProvider> // Wrap the stack in the UserAnswersProvider to provide context to all screens
     <Stack>
       <Stack.Screen
         name="index"

@@ -1,31 +1,35 @@
 import { createContext, useContext, useState } from "react";
 
+// This context will hold the user's answers throughout the app
 export interface ApplianceWithHours {
-  id: string; 
-  hours: number; 
+  id: string;
+  hours: number;
   wattage: number;
+  quantity: number;
 }
 
+// Define the structure of the answers object
 type Answers = {
   appliances: ApplianceWithHours[];
   usage?: Record<string, number>;
-  area?: number | null; // For the area input (can be null if not entered)
-  installationLocation?: 'roof' | 'ground' | null; // For the first dropdown
-  shading?: 'noshade' | 'someshade' | 'mostshade' | null; // For the second dropdown
+  area?: number | null;
+  installationLocation?: 'roof' | 'ground' | null;
+  shading?: 'noshade' | 'someshade' | 'mostshade' | null;
   location?: {
-    longitude: number, 
+    longitude: number,
     latitude: number
-  }; 
-  budget?: number; 
+  };
+  budget?: number;
 };
 
+// Define the context type
 type ContextType = {
   answers: Answers;
   setAnswers: React.Dispatch<React.SetStateAction<Answers>>;
 };
-
 const UserAnswersContext = createContext<ContextType | undefined>(undefined);
 
+// Create a provider component to wrap the app and provide the context
 export const UserAnswersProvider = ({ children }: { children: React.ReactNode }) => {
   const [answers, setAnswers] = useState<Answers>({
     appliances: [],
@@ -33,10 +37,11 @@ export const UserAnswersProvider = ({ children }: { children: React.ReactNode })
     area: null,
     installationLocation: null,
     shading: null,
-    location: undefined, 
-    budget: undefined, 
+    location: undefined,
+    budget: undefined,
   });
 
+  // Initialize the context value
   return (
     <UserAnswersContext.Provider value={{ answers, setAnswers }}>
       {children}
@@ -44,6 +49,7 @@ export const UserAnswersProvider = ({ children }: { children: React.ReactNode })
   );
 };
 
+// Custom hook to use the UserAnswersContext, allowing components to access the answers and setAnswers function easily
 export const useUserAnswers = () => {
   const context = useContext(UserAnswersContext);
   if (!context) {

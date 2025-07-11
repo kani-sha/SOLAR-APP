@@ -96,3 +96,4 @@ const [batteryAmt, setBatteryAmt] = useState<number | null>(null);
   );
 }
 
+

@@ -43,7 +43,7 @@ export default function SurveyScreen3() {
 
   return (
     <View style={styles.container}>
-     <View style={styles.formArea}>
+    <View style={styles.formArea}>
       <Text style={styles.text}>How much space do you have?</Text>
       <TextInput
         style={styles.input}
@@ -54,7 +54,7 @@ export default function SurveyScreen3() {
         onChangeText={setArea}
       />
 
-      <Text style={styles.subText}>Where are you planning to install?</Text>          
+      <Text style={styles.subText}>Where are you planning to install?</Text>
       <DropDownPicker
         open={open}
         value={installationLocation}
@@ -81,7 +81,7 @@ export default function SurveyScreen3() {
         containerStyle={{ width: '100%', marginTop: 20, zIndex: 1000 }}
         style={{ backgroundColor: '#fff', borderColor: '#ccc' }}
         dropDownContainerStyle={{ backgroundColor: '#fff' }}
-        textStyle={{ fontSize: 16 }}  
+        textStyle={{ fontSize: 16 }}
       />
       </View>
 
