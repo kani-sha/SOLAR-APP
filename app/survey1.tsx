@@ -46,7 +46,7 @@ const router = useRouter();
       hours: 0,
       defaultWattage: defaultWattages[id] || 0,
       wattage: defaultWattages[id] || 0, // Assuming wattage is also needed
-      quantity: 0,
+      quantity: 1,
     }));
 
 
