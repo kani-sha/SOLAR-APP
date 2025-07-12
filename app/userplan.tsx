@@ -83,6 +83,10 @@ const [batteryAmt, setBatteryAmt] = useState<number | null>(null);
     }
   }, [totalDailyWattageHours]);
 
+  // - Tilt Angle
+
+  const tilt = location && 'latitude' in location ? (location as any).latitude : 0;
+
   return (
     <div className="p-4">
       <h2 className="text-xl font-bold">Your Solar Plan</h2>
@@ -96,9 +100,7 @@ const [batteryAmt, setBatteryAmt] = useState<number | null>(null);
   );
 }
 
-// - Tilt Angle
 
-const tilt = location && 'latitude' in location ? (location as any).latitude : 0;
 
 
 
