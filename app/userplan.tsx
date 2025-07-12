@@ -17,7 +17,6 @@ const [batteryAmt, setBatteryAmt] = useState<number | null>(null);
   const UNIT_BATTERY_AH = 100;
 
 // -- Calculations -- //
-// comment for github :D
     const { appliances, usage, area, location, installationLocation, shading, budget } = answers;
 
 
@@ -96,5 +95,10 @@ const [batteryAmt, setBatteryAmt] = useState<number | null>(null);
     </div>
   );
 }
+
+// - Tilt Angle
+
+const tilt = location && 'latitude' in location ? (location as any).latitude : 0;
+
 
 
