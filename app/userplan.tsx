@@ -25,8 +25,8 @@ const [batteryAmt, setBatteryAmt] = useState<number | null>(null);
     if (appliances && appliances.length > 0) {
         totalDailyWattageHours = appliances.reduce((sum, appliance) => {
             const dailyWh = appliance.wattage * appliance.hours * appliance.quantity;
-            return (sum + dailyWh) * 1.3;
-        }, 0);
+            return (sum + dailyWh);
+        }, 0) * 1.3;
 
     
     }
@@ -87,6 +87,16 @@ const [batteryAmt, setBatteryAmt] = useState<number | null>(null);
 
   const tilt = location && 'latitude' in location ? (location as any).latitude : 0;
 
+  // - Cost Estimation
+  const PANEL_COST = 250;
+  const BATTERY_COST = 200;
+  const CONTROLLER_COST = 30;
+  const LABOR_COST = 20;
+
+  const totalCost = (panelAmt ?? 0) * PANEL_COST +
+                    (batteryAmt ?? 0) * BATTERY_COST +
+                    CONTROLLER_COST + LABOR_COST;
+
   return (
     <div className="p-4">
       <h2 className="text-xl font-bold">Your Solar Plan</h2>
@@ -95,6 +105,8 @@ const [batteryAmt, setBatteryAmt] = useState<number | null>(null);
         <p><strong>Total Daily Energy Usage:</strong> {totalDailyWattageHours.toFixed(2)} Wh</p>
         {psh !== null && <p><strong>Peak Sun Hours (min):</strong> {psh.toFixed(2)} hours/day</p>}
         {panelAmt !== null && <p><strong>Estimated Solar Panels Needed:</strong> {panelAmt}</p>}
+        {batteryAmt !== null && <p><strong>Estimated Batteries Needed:</strong> {batteryAmt}</p>}
+        {totalCost > 0 && <p><strong>Estimated System Cost:</strong> ${totalCost.toFixed(2)}</p>}
       </div>
     </div>
   );
