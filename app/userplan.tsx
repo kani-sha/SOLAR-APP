@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { useUserAnswers } from './context/UserAnswersContext';
 
 export default function UserPlanScreen() {
@@ -30,6 +31,7 @@ const [batteryAmt, setBatteryAmt] = useState<number | null>(null);
 
     
     }
+
     // - Fetch solar radiation data
     useEffect(() => {
   async function fetchSolarData() {
@@ -56,6 +58,9 @@ const [batteryAmt, setBatteryAmt] = useState<number | null>(null);
     } catch (error) {
       console.error("Error fetching solar data:", error);
     }
+
+
+
   }
 
   fetchSolarData();
@@ -98,19 +103,77 @@ const [batteryAmt, setBatteryAmt] = useState<number | null>(null);
                     CONTROLLER_COST + LABOR_COST;
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold">Your Solar Plan</h2>
+  <View style={styles.container}> {/* Assuming a View component from React Native or a similar styled div in React */}
 
-      <div className="mt-4">
-        <p><strong>Total Daily Energy Usage:</strong> {totalDailyWattageHours.toFixed(2)} Wh</p>
-        {psh !== null && <p><strong>Peak Sun Hours (min):</strong> {psh.toFixed(2)} hours/day</p>}
-        {panelAmt !== null && <p><strong>Estimated Solar Panels Needed:</strong> {panelAmt}</p>}
-        {batteryAmt !== null && <p><strong>Estimated Batteries Needed:</strong> {batteryAmt}</p>}
-        {totalCost > 0 && <p><strong>Estimated System Cost:</strong> ${totalCost.toFixed(2)}</p>}
-      </div>
-    </div>
-  );
+    {/* Display the title for the solar plan */}
+    <Text style={styles.title}>Your Solar Plan</Text>
+
+    {/* Section to display the calculated solar plan details */}
+    <View style={styles.detailsContainer}>
+      <Text style={styles.detailText}>
+        <Text style={styles.boldText}>Total Daily Energy Usage:</Text> {totalDailyWattageHours.toFixed(2)} Wh
+      </Text>
+      {psh !== null && (
+        <Text style={styles.detailText}>
+          <Text style={styles.boldText}>Peak Sun Hours (min):</Text> {psh.toFixed(2)} hours/day
+        </Text>
+      )}
+      {panelAmt !== null && (
+        <Text style={styles.detailText}>
+          <Text style={styles.boldText}>Estimated Solar Panels Needed:</Text> {panelAmt}
+        </Text>
+      )}
+      {batteryAmt !== null && (
+        <Text style={styles.detailText}>
+          <Text style={styles.boldText}>Estimated Batteries Needed:</Text> {batteryAmt}
+        </Text>
+      )}
+      {totalCost > 0 && (
+        <Text style={styles.detailText}>
+          <Text style={styles.boldText}>Estimated System Cost:</Text> ${totalCost.toFixed(2)}
+        </Text>
+      )}
+    </View>
+  </View>
+);
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingTop: 25,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#5A88C9",
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  detailsContainer: {
+    width: '100%',
+    padding: 20,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  detailText: {
+    fontSize: 18,
+    color: '#333',
+    marginBottom: 10,
+  },
+  boldText: {
+    fontWeight: 'bold',
+  },
+});
 
 
 
