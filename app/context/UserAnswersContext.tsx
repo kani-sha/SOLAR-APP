@@ -3,6 +3,7 @@ import { createContext, useContext, useState } from "react";
 // This context will hold the user's answers throughout the app
 export interface ApplianceWithHours {
   id: string;
+  name: string;           
   hours: number;
   wattage: number;
   quantity: number;
