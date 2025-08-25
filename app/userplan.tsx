@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useUserAnswers } from './context/UserAnswersContext';
 
+
 export default function UserPlanScreen() {
   const { answers } = useUserAnswers();
 
   //const { appliances, location } = answers;
 
-  const [psh, setPsh] = useState<number>(4.4); // Peak Sun Hours - hardcoded for now
+  const [psh, setPsh] = useState<number>(5.0); // Peak Sun Hours - hardcoded for now
   const [panelAmt, setPanelAmt] = useState<number | null>(null);
   const [batteryAmt, setBatteryAmt] = useState<number | null>(null);
 
@@ -32,34 +33,60 @@ export default function UserPlanScreen() {
     }, 0) * 1.3;
   }
 
-  // - Fetch solar radiation data (Optional, currently hardcoded)
-  // useEffect(() => {
-  //   async function fetchSolarData() {
-  //     if (!location) return;
-  //     try {
-  //       const { latitude, longitude } = location;
-  //       const apiKey = import.meta.env.VITE_SOLAR_API_KEY;
+interface NasaPowerResponse {
+    properties: {
+      parameter: {
+        ALLSKY_KWH_M2_DAY: Record<string, number>;
+      };
+    };
+  }
 
-  //       const response = await fetch(
-  //         `https://developer.nrel.gov/api/solar/solar_resource/v1.json?api_key=${apiKey}&lat=${latitude}&lon=${longitude}`
-  //       );
+function getDateString(daysAgo: number): string {
+  const d = new Date();
+  d.setDate(d.getDate() - daysAgo);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}${month}${day}`;
+}
 
-  //       const data = await response.json();
+async function fetchAvgPSH(lat: number, lon: number): Promise<number> {
+  const end = getDateString(1);   // yesterday
+  const start = getDateString(30); // 30 days ago
 
-  //       // Extract annual average solar radiation (kWh/m²/day)
-  //       const psh = data?.outputs?.avg_dni?.annual;
+  const url = `https://power.larc.nasa.gov/api/temporal/daily/point?parameters=ALLSKY_KWH_M2_DAY&community=RE&longitude=${lon}&latitude=${lat}&start=${start}&end=${end}&format=JSON`;
 
-  //       if (psh && typeof psh === "number") {
-  //         setPsh(psh);
-  //       } else {
-  //         console.error("Invalid solar data:", data);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching solar data:", error);
-  //     }
-  //   }
-  //   fetchSolarData();
-  // }, [location]);
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`NASA POWER API request failed: ${response.statusText}`);
+  }
+
+  const data = (await response.json()) as NasaPowerResponse;
+  const values = Object.values(data.properties.parameter.ALLSKY_KWH_M2_DAY);
+
+  if (values.length === 0) throw new Error("No PSH data returned");
+
+  const avg = values.reduce((a, b) => a + b, 0) / values.length;
+  return avg;
+}
+
+  useEffect(() => {
+    async function updatePSH() {
+      if (!location?.latitude || !location?.longitude) return;
+
+      try {
+        const avgPSH = await fetchAvgPSH(location.latitude, location.longitude);
+        setPsh(avgPSH);
+        console.log("Stored 30-day avg PSH:", avgPSH);
+      } catch (error) {
+        console.error("Error fetching PSH:", error);
+      }
+    }
+
+    updatePSH();
+  }, [location]);
+
+
 
   // - Solar Panel Sizing
   useEffect(() => {
@@ -71,6 +98,9 @@ export default function UserPlanScreen() {
     }
   }, [psh, totalDailyWattageHours]);
 
+
+
+
   // - Battery Amount Calculation
   useEffect(() => {
     if (totalDailyWattageHours > 0) {
@@ -81,6 +111,7 @@ export default function UserPlanScreen() {
       setBatteryAmt(batteryAmt);
     }
   }, [totalDailyWattageHours]);
+
 
   // - Tilt Angle
   const tilt = location && 'latitude' in location ? (location as any).latitude : 0;
@@ -95,11 +126,6 @@ export default function UserPlanScreen() {
                     (batteryAmt ?? 0) * BATTERY_COST +
                     CONTROLLER_COST + LABOR_COST;
 
-  console.log("totalDailyWattageHours:", totalDailyWattageHours);
-  console.log("psh:", psh);
-  console.log("panelAmt:", panelAmt);
-  console.log("batteryAmt:", batteryAmt);
-  console.log("totalCost:", totalCost);
 
   //const loadProfile = appliances?.map(app => `${app.quantity} ${app.name} (${app.hours}h)`).join(", ") ?? "N/A";
   const loadProfile = appliances?.map(app => {
@@ -123,7 +149,7 @@ export default function UserPlanScreen() {
           <Text style={styles.boldText}>Total Daily Energy Usage:</Text> {totalDailyWattageHours.toFixed(2)} Wh
         </Text>
         <Text style={styles.detailText}>
-          <Text style={styles.boldText}>Peak Sun Hours (min):</Text> {psh !== null ? psh.toFixed(2) : "N/A"} hours/day
+          <Text style={styles.boldText}>Avg Peak Sun Hours:</Text> {psh !== null ? psh.toFixed(2) : "N/A"} hours/day
         </Text>
         <Text style={styles.detailText}>
           <Text style={styles.boldText}>Estimated Solar Panels Needed:</Text> {panelAmt !== null ? `${panelAmt} × 400W (Tilt: ${tilt} degrees)` : "N/A"}
