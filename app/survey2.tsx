@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { ApplianceWithHours, useUserAnswers } from './context/UserAnswersContext';
 
-// Labels for appliances to be displayed in the UI
 const applianceLabels: Record<string, string> = {
   fridge: "Refrigerator",
   ac: "Air Conditioner",
@@ -30,7 +29,6 @@ const applianceLabels: Record<string, string> = {
   circular_saw: "Circular Saw",
 };
 
-// Default wattages for appliances, used if not specified by the use
 export const defaultWattages: Record<string, number> = {
   fridge: 150,
   ac: 1500,
@@ -56,23 +54,17 @@ export const defaultWattages: Record<string, number> = {
   circular_saw: 1000,
 };
 
-// This is the second survey screen where users can specify how long they will use their appliances daily
 export default function SurveyScreen2() {
   const router = useRouter();
   const {answers, setAnswers} =useUserAnswers();
   const appliances: ApplianceWithHours[] = answers.appliances || [];
 
-  // State to track which appliance's wattage is currently being edited
   const [editingApplianceId, setEditingApplianceId] = useState<string | null>(null);
-  // State to hold the temporary value while editing, before saving to context
   const [tempWattage, setTempWattage] = useState<string>('');
 
-  // State to track which appliance's quantity is currently being edited
   const [editingApplianceQuantityId, setEditingApplianceQuantityId] = useState<string | null>(null);
-  // State to hold the temporary quantity value while editing
   const [tempQuantity, setTempQuantity] = useState<string>('');
 
-  // Effect to initialize tempWattage when editing mode starts
   useEffect(() => {
     if (editingApplianceId) {
       const appliance = appliances.find(a => a.id === editingApplianceId);
@@ -82,7 +74,6 @@ export default function SurveyScreen2() {
     }
   }, [editingApplianceId, appliances]);
 
-  // Effect to initialize tempQuantity when quantity editing mode starts
   useEffect(() => {
     if (editingApplianceQuantityId) {
       const appliance = appliances.find(a => a.id === editingApplianceQuantityId);
@@ -94,21 +85,17 @@ export default function SurveyScreen2() {
 
   const handleHoursChange = (applianceId: string, newHours: number) => {
     setAnswers((prevAnswers) => {
-      // 1. Create a NEW array by mapping over the previous appliances from context
       const updatedAppliances = (prevAnswers.appliances || []).map((appliance) =>
-        // 2. If the current appliance matches the one we're changing
         appliance.id === applianceId
-          ? // 3. Return a NEW object for this appliance, but with the updated hours
+          ?
             { ...appliance, hours: newHours }
-          : // 4. Otherwise, return the appliance object as is (no change)
+          :
             appliance
       );
-      // 5. Return the new answers object with the updated appliances array
       return { ...prevAnswers, appliances: updatedAppliances };
     });
   };
 
-  // New function to handle wattage changes and update context
   const handleWattageChange = (applianceId: string, newWattage: number) => {
     setAnswers((prevAnswers) => {
       const updatedAppliances = (prevAnswers.appliances || []).map((appliance) =>
