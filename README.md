@@ -1,6 +1,6 @@
 # 🌞 Solar D.I.Y App
 
-A **cross-platform mobile application** developed using **React Native** and **Expo**, designed to assist in the installation of solar panels—particularly in **developing countries**.
+A **cross-platform mobile application** developed using **React Native** and **Expo**, designed to guide and instruct the installation of solar panels, particularly in developing countries.
 
 > 📚 Developed under the guidance of **Professor Paul Berger** at **The Ohio State University**.
 
