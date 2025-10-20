@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useUserAnswers } from './context/UserAnswersContext';
 
 
@@ -158,17 +159,22 @@ async function fetchAvgPSH(lat: number, lon: number): Promise<number> {
           <Text style={styles.boldText}>Estimated Batteries Needed:</Text> {batteryAmt !== null ? `${batteryAmt} × 12V 100Ah (Gel-Battery)` : "N/A"}
         </Text>
         <Text style={styles.detailText}>
-          <Text style={styles.boldText}>System Voltage:</Text> {SYSTEM_VOLTAGE}V DC
-        </Text>
-        <Text style={styles.detailText}>
           <Text style={styles.boldText}>Estimated System Cost:</Text> ${totalCost.toFixed(2)}
         </Text>
         <Text style={styles.detailText}>
           <Text style={styles.boldText}>Load Profile:</Text> {loadProfile}
         </Text>
       </View>
+
+      <TouchableOpacity>
+          style={styles.button}
+          onPress={() => router.push("/survey1") }
+      </TouchableOpacity>
+
     </View>
   );
+
+
 }
 
 const styles = StyleSheet.create({
