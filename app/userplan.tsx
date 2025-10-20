@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { useEffect, useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useUserAnswers } from './context/UserAnswersContext';
 
 
 export default function UserPlanScreen() {
+  const router = useRouter();
   const { answers } = useUserAnswers();
 
   //const { appliances, location } = answers;
@@ -166,9 +167,12 @@ async function fetchAvgPSH(lat: number, lon: number): Promise<number> {
         </Text>
       </View>
 
-      <TouchableOpacity>
-          style={styles.button}
-          onPress={() => router.push("/survey1") }
+      <TouchableOpacity
+              style={styles.button}
+              onPress={() => router.push("/userportal")}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.buttonText}>Next</Text>
       </TouchableOpacity>
 
     </View>
@@ -211,5 +215,20 @@ const styles = StyleSheet.create({
   },
   boldText: {
     fontWeight: 'bold',
+  },
+    button: {
+    marginTop: 300,
+    position: "absolute",
+    bottom: 50,
+    backgroundColor: "#fff",
+    paddingVertical: 14,
+    paddingHorizontal: 60,
+    borderRadius: 10,
+  },
+  buttonText: {
+    color: "#f0a500",
+    fontWeight: "bold",
+    fontSize: 18,
+    textAlign: "center",
   },
 });
